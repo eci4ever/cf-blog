@@ -131,7 +131,7 @@ All commands are run from the root of the project, from a terminal:
 
 The site is hosted on **Cloudflare Pages** and auto-deploys: every push to `main` triggers a build (`npm run build`, output `dist/`) and publishes it to production.
 
-- Production: <https://cf-blog-46p.pages.dev/>
-- Custom domain (pending DNS): <https://blog.nimfi.dev/>
+- Production: <https://blog.nimfi.dev/>
+- Pages alias: <https://cf-blog-46p.pages.dev/>
 
 To publish a new post, just commit the `.mdx` file in `src/content/blog/` and push — no manual deploy needed.
