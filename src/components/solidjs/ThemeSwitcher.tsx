@@ -21,6 +21,8 @@ export default function ThemeSwitcher() {
   const [theme, setTheme] = createSignal(getInitialTheme());
 
   onMount(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const savedTheme = localStorage.getItem('theme');
     mediaQuery.addEventListener('change', (event: MediaQueryListEvent) => {
       if (!savedTheme) {
         setTheme(event.matches ? 'dark' : 'light');

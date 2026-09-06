@@ -111,14 +111,13 @@ const jsonLd = article
 ---
 
 <head>
-  <script is:inline>
+  <script is:inline define:vars={{ configuredTheme: SITE_METADATA.theme }}>
     (() => {
-      const configured = {JSON.stringify(SITE_METADATA.theme)};
       const saved = localStorage.getItem("theme");
       const theme =
         saved ||
-        (configured !== "system"
-          ? configured
+        (configuredTheme !== "system"
+          ? configuredTheme
           : window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "dark"
             : "light");
