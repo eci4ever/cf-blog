@@ -2,7 +2,10 @@
 import "@/styles/global.css";
 import { SITE_METADATA } from "@/consts";
 import { ClientRouter } from "astro:transitions";
-import "@fontsource/onest";
+import "@fontsource/onest/400.css";
+import "@fontsource/onest/500.css";
+import "@fontsource/onest/700.css";
+import "@fontsource/onest/800.css";
 import { SEO } from "astro-seo";
 import { getEntry, type CollectionEntry } from "astro:content";
 import Favicon from "@/assets/favicon.svg";
@@ -63,9 +66,65 @@ if (article?.cover) {
 
 const twitterCreator = article?.authorTwitter || creator?.data?.twitter;
 const isProduction = import.meta.env.PROD;
+
+// Absolute URLs are required by social crawlers for og:image / twitter:image
+const siteUrl = SITE_METADATA.siteUrl.replace(/\/$/, "");
+const absoluteUrl = (path: string) => `${siteUrl}${path}`;
+const ogImageUrl = absoluteUrl(openGraphImage.src);
+const ogImageType = openGraphImage.src.endsWith(".png")
+  ? "image/png"
+  : openGraphImage.src.endsWith(".webp")
+    ? "image/webp"
+    : "image/jpeg";
+const toHandle = (url: string) =>
+  url.replace(/https:\/\/(www\.)?(twitter|x)\.com\//, "@");
+
+// JSON-LD structured data for search engines
+const authorUrl =
+  creator?.data?.github ||
+  creator?.data?.twitter ||
+  absoluteUrl("/about");
+const jsonLd = article
+  ? {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: title,
+      description,
+      image: [ogImageUrl],
+      datePublished: article.publishedTime.toISOString(),
+      dateModified: (article.modifiedTime ?? article.publishedTime).toISOString(),
+      author: {
+        "@type": "Person",
+        name: creator?.data?.name ?? SITE_METADATA.title,
+        url: authorUrl,
+      },
+      keywords: article.tags.join(", "),
+      mainEntityOfPage: Astro.url.toString(),
+    }
+  : {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: SITE_METADATA.title,
+      url: SITE_METADATA.siteUrl,
+      description,
+    };
 ---
 
 <head>
+  <script is:inline>
+    (() => {
+      const configured = {JSON.stringify(SITE_METADATA.theme)};
+      const saved = localStorage.getItem("theme");
+      const theme =
+        saved ||
+        (configured !== "system"
+          ? configured
+          : window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
+      document.documentElement.classList.add(theme);
+    })();
+  </script>
   <SEO
     title={title}
     {titleTemplate}
@@ -101,24 +160,26 @@ const isProduction = import.meta.env.PROD;
     twitter={{
       ...((twitterCreator && {
         card: "summary_large_image",
-        // site: creator.data.twitter,
-        creator: twitterCreator.replace(/https:\/\/(www\.)?(twitter|x)\.com\//, "@"),
+        site: SITE_METADATA.twitter
+          ? toHandle(SITE_METADATA.twitter)
+          : undefined,
+        creator: toHandle(twitterCreator),
         title,
         description,
-        image: openGraphImage.src,
+        image: ogImageUrl,
       }) ||
         {}),
     }}
     openGraph={{
       basic: {
-        type: "website",
+        type: article ? "article" : "website",
         url: Astro.url,
         title,
-        image: openGraphImage.src,
+        image: ogImageUrl,
       },
       image: {
-        url: openGraphImage.src,
-        type: `image/${openGraphImage.options.format}`,
+        url: ogImageUrl,
+        type: ogImageType,
         width: openGraphImage.options.width,
         height: openGraphImage.options.height,
         alt: title,
@@ -137,6 +198,7 @@ const isProduction = import.meta.env.PROD;
       }),
     }}
   />
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   {isProduction && <Analytics />}
   <ClientRouter />
 </head>

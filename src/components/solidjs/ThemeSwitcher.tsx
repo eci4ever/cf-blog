@@ -4,14 +4,21 @@ import { useTranslations } from "@/i18n";
 
 const t = useTranslations();
 
-export default function ThemeSwitcher() {
+const isBrowser = typeof window !== "undefined";
+
+const getInitialTheme = () => {
+  if (!isBrowser) return "light";
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
   let preferredTheme = mediaQuery.matches ? 'dark' : 'light';
   if (SITE_METADATA.theme !== 'system') {
     preferredTheme = SITE_METADATA.theme;
   }
   const savedTheme = localStorage.getItem('theme');
-  const [theme, setTheme] = createSignal(savedTheme || preferredTheme);
+  return savedTheme || preferredTheme;
+};
+
+export default function ThemeSwitcher() {
+  const [theme, setTheme] = createSignal(getInitialTheme());
 
   onMount(() => {
     mediaQuery.addEventListener('change', (event: MediaQueryListEvent) => {
