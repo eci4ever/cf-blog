@@ -10,7 +10,7 @@ const URL = `https://www.facebook.com/sharer/sharer.php?u=${Astro.request.url}`;
   }
 </style>
 <a
-  class="social-share-btn"
+  class="social-share-btn hover:text-primary-500 dark:hover:text-primary-400"
   target="_blank"
   href={URL}
   rel="noopener noreferrer"
@@ -19,7 +19,7 @@ const URL = `https://www.facebook.com/sharer/sharer.php?u=${Astro.request.url}`;
 </a>
 
 <style>
-  svg:hover {
-    fill: #1877f2;
+  a {
+    margin-right: 10px;
   }
 </style>
