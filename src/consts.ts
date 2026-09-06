@@ -5,7 +5,7 @@
  */
 export const SITE_METADATA = {
   theme: "system", // Options: system, light, dark
-  siteUrl: "https://tasb.yon.fun/",
+  siteUrl: "https://cf-blog-46p.pages.dev/",
   siteRepo: "https://github.com/eci4ever/cf-blog",
   robots: "index, follow", // Options: index, noindex, follow, nofollow
 
