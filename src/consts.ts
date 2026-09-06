@@ -5,9 +5,10 @@
  */
 export const SITE_METADATA = {
   title: "nmfairus",
-  email: "eci4ever@gmail.com",
+  email: "nmfairus@gmail.com",
   github: "https://github.com/nmfairus",
   twitter: "https://x.com/nmfairus",
+  templateRepo: "https://github.com/wanoo21/tailwind-astro-starting-blog",
   theme: "system", // Options: system, light, dark
   siteUrl: "https://blog.nimfi.dev/",
   siteRepo: "https://github.com/eci4ever/cf-blog",
