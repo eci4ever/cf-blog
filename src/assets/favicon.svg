@@ -1,11 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#ec4899"/>
-      <stop offset="1" stop-color="#8b5cf6"/>
-    </linearGradient>
-  </defs>
-  <rect width="48" height="48" rx="12" fill="url(#g)"/>
+  <style>
+    rect { fill: #000000; }
+    path { stroke: #ffffff; }
+    circle { fill: #ffffff; }
+    @media (prefers-color-scheme: dark) {
+      rect { fill: #ffffff; }
+      path { stroke: #000000; }
+      circle { fill: #000000; }
+    }
+  </style>
+  <rect width="48" height="48" rx="12" fill="#000000"/>
   <path d="M14 33V22C14 17.6 16.9 15 20.5 15C24.1 15 27 17.6 27 22V33" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
   <circle cx="34.5" cy="32.5" r="2.8" fill="#ffffff"/>
 </svg>
