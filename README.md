@@ -126,3 +126,12 @@ All commands are run from the root of the project, from a terminal:
 | `npm run preview`         | Preview your build locally, before deploying     |
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
+
+## 🚀 Deployment
+
+The site is hosted on **Cloudflare Pages** and auto-deploys: every push to `main` triggers a build (`npm run build`, output `dist/`) and publishes it to production.
+
+- Production: <https://cf-blog-46p.pages.dev/>
+- Custom domain (pending DNS): <https://blog.nimfi.dev/>
+
+To publish a new post, just commit the `.mdx` file in `src/content/blog/` and push — no manual deploy needed.
