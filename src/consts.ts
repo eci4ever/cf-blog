@@ -4,6 +4,10 @@
  * A few of these are not used yet, and are subject to change, example of this is Author.
  */
 export const SITE_METADATA = {
+  title: "nmfairus",
+  email: "eci4ever@gmail.com",
+  github: "https://github.com/nmfairus",
+  twitter: "https://x.com/nmfairus",
   theme: "system", // Options: system, light, dark
   siteUrl: "https://blog.nimfi.dev/",
   siteRepo: "https://github.com/eci4ever/cf-blog",

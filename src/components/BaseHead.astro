@@ -102,7 +102,7 @@ const isProduction = import.meta.env.PROD;
       ...((twitterCreator && {
         card: "summary_large_image",
         // site: creator.data.twitter,
-        creator: twitterCreator.replace("https://twitter.com/", "@"),
+        creator: twitterCreator.replace(/https:\/\/(www\.)?(twitter|x)\.com\//, "@"),
         title,
         description,
         image: openGraphImage.src,
