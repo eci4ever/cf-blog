@@ -2,6 +2,15 @@ import { defineCollection, reference, z } from "astro:content";
 import { glob } from "astro/loaders";
 import { POST_METADATA } from "./consts";
 
+// zod 4 (Astro 7) no longer parses `.default()` values through the schema, so a
+// defaulted reference would stay a plain string instead of becoming an
+// { collection, id } stub. Route defaults through the reference transform with
+// preprocess so both frontmatter-provided and defaulted values resolve to stubs.
+const referenceList = <C extends "blog" | "tags" | "authors">(
+  collection: C,
+  defaults: string[]
+) => z.preprocess((v) => v ?? defaults, z.array(reference(collection)));
+
 const authors = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/authors" }),
   schema: z.object({
@@ -25,17 +34,17 @@ const blog = defineCollection({
       title: z.string(),
       cover: image().optional(),
       date: z.coerce.date(),
-      tags: z.array(reference("tags")).default(["default"]),
+      tags: referenceList("tags", ["default"]),
       lastmod: z.coerce.date().optional(),
       draft: z.boolean().default(false),
       summary: z.string(),
       images: z.string().optional(),
-      authors: z.array(reference("authors")).default(["default"]),
+      authors: referenceList("authors", ["default"]),
       postLayout: z
         .enum(["simple", "column"])
         .default(POST_METADATA.defaultLayout as "simple" | "column"),
       canonicalUrl: z.string().optional(),
-      related: z.array(reference("blog")).default([]),
+      related: referenceList("blog", []),
     }),
 });
 
