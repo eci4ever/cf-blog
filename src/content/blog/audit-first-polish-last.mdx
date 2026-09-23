@@ -1,0 +1,91 @@
+---
+title: "Audit first, polish last: the order I fix UIs"
+date: 2026-09-23
+summary: Most people polish UI randomly — colors first, regrets later. This is the order I use instead — audit everything, fix accessibility, polish one page at a time, and save typography and copy for last.
+tags:
+  - design
+  - workflow
+postLayout: column
+---
+
+Fixing a UI is not one job. It's several, and they have an order.
+
+The mistake I kept making: fixing whatever bothered me first. A button looks off, so I nudge the color. Then the spacing. Then a heading, which makes the button wrong again. Three restyles of the same component, and the interface never settles.
+
+The fix is an order of operations. This is the sequence I now follow — most recently on an app with a dashboard, attendance tracking, and billing screens:
+
+1. **Full audit** — list every issue, rank by severity, fix nothing yet
+2. **Accessibility pass** — contrast, focus, labels, heading hierarchy
+3. **Layout and UI polish** — one page at a time
+4. **Typography and color** — the final visual pass
+5. **Copy** — one voice, applied last
+6. **Design variants** — only where two options are genuinely close
+7. **Documentation** — how each screen works, written down
+
+I run most of these passes as structured AI review sessions, but the tools are negotiable. The order is not. Here's the reasoning, step by step.
+
+## Audit everything, fix nothing
+
+The first pass is reading, not typing. Every screen, every state, one list.
+
+The discipline that matters: no fixing during the audit. The moment you fix something mid-audit, the list is dead — you're back to whack-a-mole, and the second half of the audit now describes a UI you're already changing.
+
+Each issue gets two things: a description and a severity. Not a fix. A fix without a ranked list means you spend an afternoon perfecting a footer while the broken billing flow sits untouched.
+
+## Accessibility before aesthetics
+
+The accessibility pass comes before any visual polish, for a purely selfish reason: it makes every aesthetic decision later trivial.
+
+Contrast is the obvious case. Pick a palette first and check contrast later, and you will fail — the fix means re-choosing the palette. Check contrast first and the palette picks itself, from colors that were legal from the start.
+
+Heading hierarchy works the same way. Fix the h1/h2/h3 structure before styling anything, and the layout has a skeleton to attach to. Focus rings and form labels are the same: cheap now, invasive later.
+
+Beauty constrained by accessibility is just beauty. Accessibility constrained by beauty is a rewrite.
+
+## One page at a time
+
+When the fixing starts, it happens one screen at a time — polish it end to end, ship it, commit, move to the next. Never "adjust spacing everywhere."
+
+Three reasons. Progress is visible, which keeps morale alive during a long cleanup. Regressions are attributable, because each screen lands in its own commit. And momentum is real — a finished dashboard makes the attendance page feel like a task, not a swamp.
+
+Dashboard first. It's the screen everyone sees. Attendance and billing follow.
+
+## Typography and color come last
+
+This is the step everyone wants to do first, and it's the cheapest one to do last.
+
+Once the structure is right — hierarchy, spacing, alignment — a type scale and a palette are a coat of paint. Swap the font, adjust the scale, pick from colors already constrained by the accessibility pass. Done in an afternoon.
+
+Done first, the same work gets repeated every time a layout fix shifts something underneath it. Paint belongs on a settled wall.
+
+## Copy is the final pass
+
+Writing comes last because writing describes the final UI. Polish the copy, then move a button, and the copy lies.
+
+The specific disease is mixed registers: half the screens speaking formal English, half speaking casual, sometimes in the same flow. The final pass picks one voice and enforces it on every label, empty state, and error message — including the ones nobody reads until the day everybody reads them.
+
+## Variants are for genuine coin flips
+
+Most decisions aren't decisions — the audit already told you what's broken and severity told you in what order. Comparison effort goes only where two options are truly close.
+
+Ours was the landing hero: two or three credible directions, nothing in the data to pick between them. Try the variants side by side, choose one, move on. Variant testing is a tiebreaker, not a workflow.
+
+## Document as you go
+
+Each screen gets a short written explanation of how it works — what the states are, what the rules are, what happens on each action.
+
+Written while the reasoning is fresh, it takes minutes. Written six months later, when someone finally asks why attendance locks at midnight, it takes archaeology.
+
+## What the order buys you
+
+Every step only touches what earlier steps made stable:
+
+- the audit means you fix what matters, in severity order
+- accessibility hands the palette and layout hard constraints instead of fights
+- page-by-page polish ships real progress, not half-polished everything
+- typography and color land on a settled structure
+- copy describes the UI that actually shipped
+- variants get spent only on real ties
+- docs get written while the reasoning is still in your head
+
+One pass each. No rework. The interface settles.
