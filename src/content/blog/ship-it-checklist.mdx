@@ -1,0 +1,71 @@
+---
+title: "Ship it: what to check before you release an app"
+date: 2026-10-07
+summary: A plain checklist for release day — the happy path, the sad paths, basic security, a way back, and what to watch after launch.
+cover: ../../assets/blog/ship-checklist.png
+tags:
+  - workflow
+  - shipping
+postLayout: column
+---
+
+Shipping is the fun part. Finding out later that you missed something basic is not.
+
+Most launch problems are not bugs in the feature. They are things around the feature: a state nobody tested, an open endpoint, no way back. So before I ship an app, I run this list, in order. It is boring on purpose. Boring catches things.
+
+## Test the real build, not the dev server
+
+The dev server lies. It has hot reload, your machine's speed, and your data. Test the production build on your laptop first: build it, preview it, click through it.
+
+Then make sure CI builds it too, not just your laptop. I learned this the hard way: my build was green at home and died on Cloudflare, because the build server ran an older Node version hidden in the dashboard settings. Same code, different machine, broken deploy. Keep the runtime versions the same in both places.
+
+## Walk the sad paths
+
+Every feature has a happy path. Users will not stay on it.
+
+Walk the three states every screen needs: **empty** (no data yet), **loading** (slow network), and **error** (the API is down). Then try to break it like a user would: click submit twice, paste in a weird long text, log out in the middle of a flow, hit back after saving.
+
+If a state has no design and no words yet, that is a finding. Empty screens are the first thing new users see.
+
+## Check the boring security
+
+You do not need to be a security expert to check the basics:
+
+- Run a dependency audit (`npm audit`) and clear the real findings. When a critical fix needs a big upgrade, do the upgrade. Old versions with known holes do not get safer with time.
+- Check that the **server** checks permission on every endpoint. A hidden button in the UI is not security. If the API answers without the right user, the button does not matter.
+- Validate input on the server, not only in the form. The form is a suggestion; anyone can POST anything.
+
+## Plan the way back
+
+Before you touch real data, know how you will undo it.
+
+Test every database migration on a copy of real data, not on an empty database. Take a backup before any change that cannot be undone. And know your rollback for code: on Cloudflare Pages, the last good deploy can go live again in one click. Find that button before you need it, not during an incident.
+
+If a feature is risky, hide it behind a flag. Turning it off should be faster than a new deploy.
+
+## Look at it on a real phone
+
+Resize the browser window is not enough. Open it on an actual phone, on an actual mobile network.
+
+While you are there: tab through the app with a keyboard only. Can you see where the focus is? Can you reach the button? Contrast check on the main text. None of this is hard. All of it is forgotten until someone cannot use the app.
+
+## Watch after launch
+
+You cannot fix what you cannot see. Before release day:
+
+- Error tracking is on, and you know where the errors land.
+- Basic analytics is on, so you know if people even use the thing.
+- You know where the production logs live. Look at them once before launch, so you are not learning the tool while the app is on fire.
+
+## The small housekeeping
+
+Fast to check, embarrassing to miss: a real 404 page, a favicon, page titles on every screen, social share image, and a `robots.txt` that points at production — not staging. You do not want Google indexing your test site.
+
+## If you only remember four things
+
+1. Test the production build, on CI and on your laptop.
+2. Test the failure states, not just the happy path.
+3. Know how to roll back before you need to.
+4. Be able to see errors after launch.
+
+Everything else on the list is worth doing. These four stop most shipping disasters on their own.
