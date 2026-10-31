@@ -6,8 +6,6 @@ import { SITE_METADATA } from "./src/consts.ts";
 import metaTags from "astro-meta-tags";
 import tailwindcss from "@tailwindcss/vite";
 
-import robotsTxt from "astro-robots-txt";
-
 // https://astro.build/config
 export default defineConfig({
   prefetch: {
@@ -17,7 +15,7 @@ export default defineConfig({
   image: {
     service: passthroughImageService(),
   },
-  integrations: [mdx(), sitemap(), solidJs(), metaTags(), robotsTxt()],
+  integrations: [mdx(), sitemap(), solidJs(), metaTags()],
   vite: {
     plugins: [tailwindcss()],
   },
